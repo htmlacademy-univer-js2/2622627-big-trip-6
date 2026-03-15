@@ -5,27 +5,20 @@ import TripPointView from '../view/trip-point-view.js';
 import TripSortView from '../view/trip-sort-view.js';
 import { render } from '../render.js';
 
-export class HeaderPresenter {
-  constructor({ container }) {
-    this.container = container;
+export default class TripPresenter {
+  constructor({ headerContainer, eventsContainer }) {
+    this.headerContainer = headerContainer;
+    this.eventsContainer = eventsContainer;
   }
 
   init() {
-    render(new TripFilterView(), this.container);
-  }
-}
+    render(new TripFilterView(), this.headerContainer);
 
-export class MainPresenter {
-  constructor({ container }) {
-    this.container = container;
-  }
-
-  init() {
-    render(new TripSortView(), this.container);
-    render(new EventEditFormView(), this.container);
-    render(new EventCreationFormView(), this.container);
-    render(new TripPointView(), this.container);
-    render(new TripPointView(), this.container);
-    render(new TripPointView(), this.container);
+    render(new TripSortView(), this.eventsContainer);
+    render(new EventEditFormView(), this.eventsContainer);
+    render(new EventCreationFormView(), this.eventsContainer);
+    render(new TripPointView(), this.eventsContainer);
+    render(new TripPointView(), this.eventsContainer);
+    render(new TripPointView(), this.eventsContainer);
   }
 }
