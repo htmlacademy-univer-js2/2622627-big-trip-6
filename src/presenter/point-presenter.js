@@ -1,6 +1,7 @@
 import EventEditFormView from '../view/event-edit-form-view.js';
 import TripPointView from '../view/trip-point-view.js';
 import { render, replace, remove } from '../framework/render.js';
+import { UserAction, UpdateType } from '../const.js';
 
 export default class PointPresenter {
   #eventsContainer = null;
@@ -85,12 +86,25 @@ export default class PointPresenter {
       offers: allOffers,
       allDestinations,
       onFormSubmit: this.#handleFormSubmit,
-      onRollupClick: this.#replaceEditFormToPoint
+      onRollupClick: this.#replaceEditFormToPoint,
+      onDeleteClick: this.#handleDeleteClick
     });
   }
 
   #handleFormSubmit = (updatedPoint) => {
-    this.#onDataChange(updatedPoint);
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      updatedPoint
+    );
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#onDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 
   #replacePointToEditForm = () => {
@@ -110,10 +124,14 @@ export default class PointPresenter {
   };
 
   #favoriteClickHandler = () => {
-    this.#onDataChange({
-      ...this.#point,
-      isFavorite: !this.#point.isFavorite
-    });
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      {
+        ...this.#point,
+        isFavorite: !this.#point.isFavorite
+      }
+    );
   };
 
   #escKeyDownHandler = (evt) => {
