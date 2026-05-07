@@ -242,26 +242,42 @@ export default class TripPresenter {
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
-    this.#uiBlocker.block();
+    const pointPresenter = this.#pointPresenters.get(update.id);
+    const isFavoriteAction =
+      actionType === UserAction.UPDATE_POINT &&
+      pointPresenter &&
+      !pointPresenter.isEditFormOpen();
+
+    if (!isFavoriteAction) {
+      this.#uiBlocker.block();
+    }
 
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointPresenters.get(update.id).setSaving();
+        if (!isFavoriteAction) {
+          pointPresenter.setSaving();
+        }
+
         try {
           await this.#pointsModel.updatePoint(updateType, update);
-        } catch (err) {
-          this.#pointPresenters.get(update.id).setAborting();
+        } catch(err) {
+          if (!isFavoriteAction) {
+            pointPresenter.setAborting();
+          }
         } finally {
-          this.#uiBlocker.unblock();
+          if (!isFavoriteAction) {
+            this.#uiBlocker.unblock();
+          }
         }
         break;
 
       case UserAction.ADD_POINT:
         this.#newPointPresenter.setSaving();
+
         try {
           await this.#pointsModel.addPoint(updateType, update);
           this.#newPointPresenter.destroy();
-        } catch (err) {
+        } catch(err) {
           this.#newPointPresenter.setAborting();
         } finally {
           this.#uiBlocker.unblock();
@@ -269,11 +285,12 @@ export default class TripPresenter {
         break;
 
       case UserAction.DELETE_POINT:
-        this.#pointPresenters.get(update.id).setDeleting();
+        pointPresenter.setDeleting();
+
         try {
           await this.#pointsModel.deletePoint(updateType, update);
-        } catch (err) {
-          this.#pointPresenters.get(update.id).setAborting();
+        } catch(err) {
+          pointPresenter.setAborting();
         } finally {
           this.#uiBlocker.unblock();
         }

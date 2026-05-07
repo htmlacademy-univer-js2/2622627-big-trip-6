@@ -454,9 +454,12 @@ export default class EventEditFormView extends AbstractStatefulView {
 
     const priceInput = this.element.querySelector('.event__input--price');
     const price = Number(priceInput.value);
+    const destinationInput = this.element.querySelector('.event__input--destination');
+    const selectedDestination = getDestinationByName(this.#allDestinations, destinationInput.value);
 
     this.#onFormSubmit?.({
       ...this._state,
+      destination: selectedDestination?.id || this._state.destination,
       basePrice: price < 0 ? 0 : price
     });
   };
