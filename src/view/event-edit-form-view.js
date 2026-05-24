@@ -126,17 +126,13 @@ const createDestinationSection = (destination) => {
 
     ${description ? `<p class='event__destination-description'>${description}</p>` : ''}
 
-    ${
-      pictures.length > 0
-        ? `
+    ${pictures.length > 0 ? `
     <div class='event__photos-container'>
       <div class='event__photos-tape'>
         ${photosTape}
       </div>
     </div>
-    `
-        : ''
-    }
+    ` : ''}
   </section>
 `;
 };
@@ -272,15 +268,11 @@ const createEventEditFormTemplate = (
           ${isDeleting ? 'Deleting...' : (isNewPoint && 'Cancel') || 'Delete'}
         </button>
 
-        ${
-          isNewPoint
-            ? ''
-            : `
-        <button class='event__rollup-btn' type='button'>
-          <span class='visually-hidden'>Open event</span>
-        </button>
-        `
-        }
+        ${ isNewPoint ? '' : `
+            <button class='event__rollup-btn' type='button'>
+              <span class='visually-hidden'>Open event</span>
+            </button>
+        `}
 
       </header>
 
