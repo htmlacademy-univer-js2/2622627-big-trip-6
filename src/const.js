@@ -2,14 +2,14 @@ const EVENT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-i
 
 const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
 
+const SORT_TYPES = ['day', 'event', 'time', 'price', 'offer'];
+
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past',
 };
-
-const SORT_TYPES = ['day', 'event', 'time', 'price', 'offer'];
 
 const SortType = {
   DAY: 'day',
